@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    {% for i in c %}
+    <h1>New Case </h1>
+        <p> Method - {{ i.method }}</p>
+
+        <p>URL
+        {{ i.url }}
+        </p>
+
+        <p>HEADERS
+        {{ i.header }}
+        </p>
+
+        <p>BODY
+        {{ i.body }}
+        </p>
+
+        <p>
+        Response
+            {% for r in i|response_date_filter:date %}
+                    {{ r.fields.body }}
+            {% endfor %}
+        </p>
+
+    {% endfor %}
+
+    </form>
+</body>
+</html>

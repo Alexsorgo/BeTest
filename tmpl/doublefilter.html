@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <p> Method - {{ method }}</p>
+
+    <p>URL
+    {{ url }}
+    </p>
+
+    <p>HEADERS
+    {{ header }}
+    </p>
+    {% for i in wtf %}
+    <p>RESPONSE CODE - {{ i.status }}
+    </p>
+
+    <p>BODY
+            {{ i.body }}
+    </p>
+    {% endfor %}
+</form>
+</body>
+</html>
