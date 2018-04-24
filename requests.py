@@ -13,5 +13,5 @@ sms = bert.encode(sms_f)
 
 Roster = Atom('Roster')
 nick = Atom('nick')
-username_f = (Roster,23,[],[],[],"Auto",[],[],[],[],[],[],[],nick)
+username_f = (Roster,456,[],[],[],"SomeNew",[],[],[],[],[],[],[],nick)
 username = bert.encode(username_f)
