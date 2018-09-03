@@ -1,24 +1,13 @@
 import bert
+
 from erlastic import Atom
-from requests import sms, delete_user
 
 
-def parser(client, payload, threadNumber):
-    data = bert.decode(bytes(payload))
-
-    for node in data:
-        if node == (Atom('ok'), Atom('sms_sent')):
-            client.publish(topic="events/1//api/anon//", payload=bytearray(sms(threadNumber)), qos=2,
-                           retain=False)
-
-        if node == Atom('Profile') and data[8] == 'remove':
-            print('User {} deleted'.format(str(threadNumber)))
-            client.disconnect()
-
-        if node == Atom('Profile') and data[8] == 'init':
-            client.publish(topic="events/1//api/anon//", payload=bytearray(
-                delete_user(threadNumber)), qos=2, retain=False)
-
-        if node == Atom('Roster'):
-            print("Roaster Updated:" + str(threadNumber))
-            client.disconnect()
+def delete_user(phone_number):
+    Profile = Atom('Profile')
+    remove = Atom('remove')
+    user_delete_f = (Profile, phone_number,[],[],[],[],[],[],remove)
+    print('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(user_delete_f)+'\r\n'
+          )
+    user_delete = bert.encode(user_delete_f)
+    return user_delete
