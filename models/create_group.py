@@ -4,7 +4,8 @@ import time
 from erlastic import Atom
 
 
-def create_group():
+def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
+                 friend_firstname, friend_lastname, friend_alias):
     module = Atom('Room')
     room_id = 'Autotest_security'+str(time.time()).split('.')[0]  # id          = [] :: [] | binary(),
     name = 'Test group'                                                 # name        = [] :: [] | binary(),
@@ -19,15 +20,15 @@ def create_group():
     prev = []
     member_next = []
     feeds = []
-    phone_id_1 = '8613777322455_728'
-    phone_id_2 = '12566018988_727'
+    phone_id_1 = main_id
+    phone_id_2 = friend_id
     avatar = []
-    names_1 = 'ANT_Pamela'
-    surnames_1 = 'ANT_Walters'
-    alias_1 = 'ANT_hic'
-    names_2 = 'America'
-    surnames_2 = 'Autotest'
-    alias_2 = 'US'
+    names_1 = main_firstname
+    surnames_1 = main_lastname
+    alias_1 = main_alias
+    names_2 = friend_firstname
+    surnames_2 = friend_lastname
+    alias_2 = friend_alias
     reader = []
     update = []
     member_settings = []

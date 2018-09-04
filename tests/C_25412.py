@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 
 from configs import config
 from erlastic import Atom
-from parsers import registration
+from parsers import registration_parser
 from tests.base_test import Auth
 from utils.logs import log
 from utils.verify import Verify
@@ -25,7 +25,7 @@ class Logined(mqtt.Client):
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
         log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        registration.parser(client, msg.payload, MAIN_FIRST_NAME, MAIN_LAST_NAME)
+        registration_parser.parser(client, msg.payload, MAIN_FIRST_NAME, MAIN_LAST_NAME)
         if data[0] == Atom('Roster') and (data[-1]) == Atom('patch'):
             log.info("Verify user register")
             Verify.true(data[2] == bytes(str(MAIN_FIRST_NAME).encode('utf-8')), 'First Name doesnt update')

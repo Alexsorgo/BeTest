@@ -3,7 +3,7 @@ import paho.mqtt.client as mqtt
 
 from configs import config
 from erlastic import Atom
-from parsers import search, friend_by_phone
+from parsers import search_parser, friend_by_phone_parser
 from tests.base_test import Auth
 from utils.logs import log
 from utils.verify import Verify
@@ -25,7 +25,7 @@ class Logined(mqtt.Client):
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
         log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        friend_by_phone.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
+        friend_by_phone_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
         log.info("Verify contact found")
         if data[0] == Atom('Contact') and data[-1] == Atom('request'):
             log.info("Friend request send")
