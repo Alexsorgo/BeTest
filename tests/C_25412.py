@@ -30,9 +30,9 @@ class Logined(mqtt.Client):
             log.info("Verify user register")
             Verify.true(data[2] == bytes(str(MAIN_FIRST_NAME).encode('utf-8')), 'First Name doesnt update')
             client.disconnect()
-
-    def on_publish(self, client, userdata, mid):
-        log.info("Publish mid == {}".format(str(mid)))
+        if data == (Atom('io'), Atom('invalid_data'), b''):
+            log.error("Something going wrong")
+            client.disconnect()
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
