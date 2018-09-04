@@ -16,7 +16,7 @@ FRIEND_FIRST_NAME = config.AMERICA_FIRSTNAME
 
 class Logined(mqtt.Client):
 
-    """User have ability to search another user by phone number"""
+    """User have ability to search and send friend request to another user by phone number"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

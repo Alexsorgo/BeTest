@@ -6,17 +6,15 @@ from erlastic import Atom
 from parsers import friend_by_username
 from tests.base_test import Auth
 from utils.logs import log
-from utils.verify import Verify
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_USERNAME = config.AMERICA_USERNAME
-FRIEND_FIRST_NAME = config.AMERICA_FIRSTNAME
+FRIEND_USERNAME = config.PERU_USERNAME
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to search another user by phone number"""
+    """User have ability to search and send friend request to another user by username"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
