@@ -2,6 +2,7 @@ import bert
 import time
 
 from erlastic import Atom
+from utils.logs import log
 
 
 def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
@@ -63,5 +64,5 @@ def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
                  tos,tos_update,unread,mentions,readers,last_msg,update,created,room_status)
 
     request = bert.encode(request_f)
-    print('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
     return request

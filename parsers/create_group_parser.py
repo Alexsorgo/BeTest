@@ -1,10 +1,8 @@
 import bert
 from erlastic import Atom
-from models.invite_friend import invite_friend
-from models.search_by_phone import search_by_phone
+from models.create_group import create_group
+from utils.convector import string_to_bytes
 from utils.logs import log
-
-global user_id
 
 
 def parser(client, payload, main_number, friend_phone):
@@ -12,20 +10,26 @@ def parser(client, payload, main_number, friend_phone):
 
     for node in data:
         if node == Atom('Profile') and data[8] == 'init':
-            roas = (bert.decode(bytes(payload))[3])
-            global user_id
-            user_id = roas[0][1]
-            client.publish(topic="events/1//api/anon//", payload=bytearray(
-                search_by_phone(user_id, friend_phone)), qos=2, retain=False)
+            contacts = data[3][0][6]
+            for field in contacts:
+                if field[0] == Atom('Contact') and field[1].split(b'_')[0] == string_to_bytes(main_number):
+                    log.debug('My profile found')
+                    main_id = field[1]
+                    main_first_name = field[3]
+                    main_last_name = field[4]
+                    main_alias = []
+                    if field[5]:
+                        main_alias = field[5]
+                if field[0] == Atom('Contact') and field[-1] == Atom('friend') and\
+                        field[1].split(b'_')[0] == string_to_bytes(friend_phone):
+                    friend_id = field[1]
+                    friend_first_name = field[3]
+                    friend_last_name = field[4]
+                    friend_alias = []
+                    if field[5]:
+                        friend_alias = field[5]
 
-        if node == Atom('io') and data[1] == (Atom('ok'), b'phone'):
-            if data[2][6]:
-                friend = data[2][6][0][1]
-                my = main_number + '_' + str(user_id)
-                log.debug("Add user {} \r\n".format(str(friend)))
-                client.publish(topic="events/1//api/anon//", payload=bytearray(
-                    invite_friend(my, friend)), qos=2, retain=False)
-            if not data[2][6]:
-                log.debug('Contact not found')
-                client.disconnect()
+            client.publish(topic="events/1//api/anon//", payload=bytearray(
+                create_group(main_id, main_first_name, main_last_name, main_alias,
+                             friend_id, friend_first_name, friend_last_name, friend_alias)), qos=2, retain=False)
 

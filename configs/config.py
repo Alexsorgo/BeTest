@@ -2,8 +2,8 @@ PASSWORD = '272b9acb0aaf1902c8b826de040ffabdf7cda8ca3f8355b0d117075c88a1c0d3ce7b
 MY_NUMBER = '8613777322455' # china
 # MY_NUMBER = '12566018988' # america
 # SERVER = '34.217.41.22'  # load
-# SERVER = '54.201.154.141' # dev
-SERVER = '52.42.76.167' # pre-prod
+SERVER = '54.201.154.141' # dev
+# SERVER = '52.42.76.167' # pre-prod
 # SERVER = '35.156.90.43' # prod
 # SERVER = '192.168.0.103'
 
