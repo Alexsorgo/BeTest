@@ -1,7 +1,6 @@
 import bert
 from erlastic import Atom
 from models.patch_group import patch_group
-from utils.convector import string_to_bytes
 from utils.logs import log
 from utils.verify import Verify
 

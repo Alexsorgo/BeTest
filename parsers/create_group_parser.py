@@ -41,14 +41,15 @@ def parser(client, payload, main_number, friend_phone, avatar=False, alias_check
 
     if data[0] == Atom('Room'):
         log.info("Verify group creation")
+        log.debug(data)
         Verify.true((data[15][10][0][3] == user_id + b' created the group' and
                      (data[8] != [] if avatar else True)), "No message about creation")
         client.disconnect()
 
     if data[0] == Atom('Room') and alias_check:
         log.info('Verify group created and alias exist')
+        log.debug(data)
         Verify.true((data[15][10][0][3] == user_id + b' created the group' and
                      ([field[0][11] for field in data if field and list == type(field) and field[0][-1] ==
                        Atom("admin")][0] == main_first_name + main_last_name)), "No message about creation")
-        log.debug(data)
         client.disconnect()
