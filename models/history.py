@@ -1,5 +1,6 @@
 import bert
 from erlastic import Atom
+from utils.logs import log
 
 
 def history_schedule():
@@ -31,4 +32,20 @@ def history_p2p():
     request_f = (model,user_id,(history_type,from_r,to_r),size,entity_id,data,action)
     request = bert.encode(request_f)
     print('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    return request
+
+
+def history_group(user_id, group_id):
+    model = Atom('History')
+    user_id = user_id               # roster_id = [] :: [] | binary(),
+    history_type = Atom('muc')
+    group_id = group_id                # group_id = [] :: [] | binary(),
+    size = []                                  # size      = 0 :: [] | integer(),
+    entity_id = []                           # entity_id = 0 :: [] | integer(),
+    data = []                                   # data      = [] :: list(#'Message'{}) | list(#'Job'{}),
+    action = Atom('delete')
+    request_f = (model,user_id,(history_type,group_id),size,entity_id,data,action)
+    request = bert.encode(request_f)
+    # log.debug('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.debug('Clear group chat history request')
     return request

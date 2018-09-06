@@ -1,6 +1,7 @@
 import bert
 import time
 
+from configs import config
 from erlastic import Atom
 from utils.logs import log
 
@@ -8,8 +9,8 @@ from utils.logs import log
 def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
                  friend_firstname, friend_lastname, friend_alias, group_avatar):
     module = Atom('Room')
-    room_id = 'Autotest_security'+str(time.time()).split('.')[0]  # id          = [] :: [] | binary(),
-    name = 'Test group'                                                 # name        = [] :: [] | binary(),
+    room_id = 'Autotest_security'+str(time.time()).split('.')[0]        # id          = [] :: [] | binary(),
+    name = config.GROUP_NAME                                            # name        = [] :: [] | binary(),
     links = []
     description = []                                                    # description = [] :: [] | binary(),
     settings = []                                                       # settings    = [] :: list(),
