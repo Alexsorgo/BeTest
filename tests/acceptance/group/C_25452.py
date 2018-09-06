@@ -2,9 +2,8 @@ import bert
 import paho.mqtt.client as mqtt
 
 from configs import config
-from erlastic import Atom
-from parsers import clear_history_parser
-from tests.base_test import Auth
+from parsers import create_group_parser
+from tests.acceptance.base_test import Auth
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
@@ -21,9 +20,9 @@ class Logined(mqtt.Client):
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
+        data = bert.decode(bytes(msg.payload))
         # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        clear_history_parser.parser(client, msg.payload, MAIN_NUMBER)
+        create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
@@ -37,7 +36,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25457():
+def test_25452():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

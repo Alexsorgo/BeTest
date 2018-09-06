@@ -3,18 +3,21 @@ import paho.mqtt.client as mqtt
 
 from configs import config
 from erlastic import Atom
-from parsers import create_group_parser
-from tests.base_test import Auth
+from parsers import friend_by_phone_parser
+from tests.acceptance.base_test import Auth
+from utils.convector import string_to_bytes
 from utils.logs import log
+from utils.verify import Verify
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_PHONE = config.JAPAN_NUMBER
+FRIEND_FIRST_NAME = config.JAPAN_FIRSTNAME
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to search and send friend request to another user by phone number"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -22,15 +25,16 @@ class Logined(mqtt.Client):
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        if data[0] == Atom("Profile"):
-            for field in data:
-                if field and list == type(field):
-                    for room in field[0]:
-                        if room and list == type(room) and room[0][0] == Atom('Room'):
-                            print(room[-1])
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        friend_by_phone_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
+        if data[0] == Atom('Contact') and data[-1] == Atom('request'):
+            log.info("Friend request send")
+            Verify.true(data[0] == Atom('Contact') and data[-1] == Atom('request') and
+                        data[1].split(b'_')[0] == string_to_bytes(FRIEND_PHONE), 'No request send')
             client.disconnect()
-        # create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE, False, True)
+        if data == (Atom('io'), Atom('invalid_data'), b''):
+            log.error("Request already send")
+            client.disconnect()
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
@@ -44,7 +48,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25453():
+def test_25413():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

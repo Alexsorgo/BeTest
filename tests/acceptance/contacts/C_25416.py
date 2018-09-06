@@ -4,7 +4,7 @@ import paho.mqtt.client as mqtt
 from configs import config
 from erlastic import Atom
 from parsers import friend_accept_parser
-from tests.base_test import Auth
+from tests.acceptance.base_test import Auth
 from utils.logs import log
 from utils.verify import Verify
 

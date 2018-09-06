@@ -3,20 +3,20 @@ import paho.mqtt.client as mqtt
 
 from configs import config
 from erlastic import Atom
-from parsers import registration_parser
-from tests.base_test import Auth
+from parsers import friend_by_phonebook_parser
+from tests.acceptance.base_test import Auth
+from utils.convector import string_to_bytes
 from utils.logs import log
 from utils.verify import Verify
 
-SERVER = config.SERVER
 MAIN_NUMBER = config.CHINA_NUMBER
-MAIN_FIRST_NAME = config.CHINA_FIRSTNAME
-MAIN_LAST_NAME = config.CHINA_LASTNAME
+SERVER = config.SERVER
+FRIEND_PHONE = config.RUSSIA_NUMBER
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to register new user"""
+    """User have ability to search and send friend request to another user by phonebook"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -25,13 +25,14 @@ class Logined(mqtt.Client):
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
         # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        registration_parser.parser(client, msg.payload, MAIN_FIRST_NAME, MAIN_LAST_NAME)
-        if data[0] == Atom('Roster') and (data[-1]) == Atom('patch'):
-            log.info("Verify user register")
-            Verify.true(data[2] == bytes(str(MAIN_FIRST_NAME).encode('utf-8')), 'First Name doesnt update')
+        friend_by_phonebook_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
+        if data[0] == Atom('Contact') and data[-1] == Atom('request'):
+            log.info("Friend request send")
+            Verify.true(data[0] == Atom('Contact') and data[-1] == Atom('request') and
+                        data[1].split(b'_')[0] == string_to_bytes(FRIEND_PHONE), 'No request send')
             client.disconnect()
         if data == (Atom('io'), Atom('invalid_data'), b''):
-            log.error("Something going wrong")
+            log.error("Request already send")
             client.disconnect()
 
     def run(self, pswa):
@@ -46,10 +47,10 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25412():
+def test_25415():
     client_id = "reg_" + MAIN_NUMBER
-    mqtt = Auth(client_id=client_id, clean_session=False)
-    _, pswa = mqtt.run(MAIN_NUMBER)
+    mqtt_client = Auth(client_id=client_id, clean_session=False)
+    _, pswa = mqtt_client.run(MAIN_NUMBER)
     client_id = "emqttd_" + MAIN_NUMBER
     mqtt2 = Logined(client_id=client_id, clean_session=False)
     mqtt2.run(pswa)
