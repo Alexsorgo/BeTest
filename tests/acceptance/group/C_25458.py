@@ -1,13 +1,15 @@
 import paho.mqtt.client as mqtt
 
+import bert
 from configs import config
-from parsers import clear_history_parser
+from parsers import clear_history_parser, group_patch_parser
 from tests.acceptance.base_test import Auth
+from utils.data_generation import magic
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_PHONE = config.JAPAN_NUMBER
+GROUP_NAME = magic.get_word
 
 
 class Logined(mqtt.Client):
@@ -21,7 +23,7 @@ class Logined(mqtt.Client):
     def on_message(self, client, userdata, msg):
         # data = bert.decode(bytes(msg.payload))
         # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        clear_history_parser.parser(client, msg.payload, MAIN_NUMBER)
+        group_patch_parser.parser(client, msg.payload, GROUP_NAME)
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)

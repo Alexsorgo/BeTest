@@ -20,8 +20,8 @@ class Logined(mqtt.Client):
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        data = bert.decode(bytes(msg.payload))
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        # data = bert.decode(bytes(msg.payload))
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         if data[0] == Atom("Profile"):
             for field in data:
                 if field and list == type(field):
