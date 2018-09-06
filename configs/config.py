@@ -2,36 +2,36 @@ PASSWORD = '272b9acb0aaf1902c8b826de040ffabdf7cda8ca3f8355b0d117075c88a1c0d3ce7b
 MY_NUMBER = '8613777322455' # china
 # MY_NUMBER = '12566018988' # america
 # SERVER = '34.217.41.22'  # load
-SERVER = '54.201.154.141' # dev
-# SERVER = '52.42.76.167' # pre-prod
+# SERVER = '54.201.154.141' # dev
+SERVER = '52.42.76.167' # pre-prod
 # SERVER = '35.156.90.43' # prod
 # SERVER = '192.168.0.103'
 
 
 # USERS:
 # User for test: main actions
-CHINA_NUMBER = "8613777322455"
+CHINA_NUMBER = "8613151713157"
 CHINA_FIRSTNAME = "China"
 CHINA_LASTNAME = "Autotest"
 CHINA_USERNAME = "CH"
 
 # User for test: friend request by phone number, p2p chat and group chat
-AMERICA_NUMBER = '12566018988'
-AMERICA_FIRSTNAME = 'America'
-AMERICA_LASTNAME = 'Autotest'
-AMERICA_USERNAME = 'US'
+JAPAN_NUMBER = '817090909090'
+JAPAN_FIRSTNAME = 'Japan'
+JAPAN_LASTNAME = 'Autotest'
+JAPAN_USERNAME = 'JP'
 
 # User for test: friend request by username
-PERU_NUMBER = '51997259024'
+PERU_NUMBER = '51900000000'
 PERU_FIRSTNAME = 'Peru'
 PERU_LASTNAME = 'Autotest'
-PERU_USERNAME = 'PE'
+PERU_USERNAME = 'PES'
 
 # User for test: friend request by contacts
-UKRAINE_NUMBER = '380998681837'
-UKRAINE_FIRSTNAME = 'Ukraine'
-UKRAINE_LASTNAME = 'Autotest'
-UKRAINE_USERNAME = 'UA'
+RUSSIA_NUMBER = '79333333333'
+RUSSIA_FIRSTNAME = 'Russia'
+RUSSIA_LASTNAME = 'Autotest'
+RUSSIA_USERNAME = 'RUS'
 
 
 NOTALLOWED_LOGIN = '2568386768'

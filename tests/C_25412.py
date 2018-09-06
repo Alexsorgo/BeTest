@@ -20,11 +20,11 @@ class Logined(mqtt.Client):
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            log.info("Reconnected successfully \r\n")
+            log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         registration_parser.parser(client, msg.payload, MAIN_FIRST_NAME, MAIN_LAST_NAME)
         if data[0] == Atom('Roster') and (data[-1]) == Atom('patch'):
             log.info("Verify user register")

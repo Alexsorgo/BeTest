@@ -22,5 +22,6 @@ def update_name(user_id, first_name, last_name):
     request_f = (model, user_id, first_name, last_name, email, my_username, user_list, room_list, favorite,
                  tags, phone, avatar, update, status)
     request = bert.encode(request_f)
-    log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    # log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.debug("Updating First/Last names")
     return request

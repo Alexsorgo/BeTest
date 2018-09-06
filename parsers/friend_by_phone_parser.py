@@ -27,5 +27,6 @@ def parser(client, payload, main_number, friend_phone):
                     invite_friend(my, friend)), qos=2, retain=False)
             if not data[2][6]:
                 log.debug('Contact not found')
+                log.debug(data)
                 client.disconnect()
 

@@ -14,5 +14,6 @@ def search_by_phone(user_id, search_number):
     status = Atom('contact')            # status = [] :: [] | profile | roster | contact | member | room
     by_phone_f = (module,user_id,ref,field,type_r,value,status)
     by_phone = bert.encode(by_phone_f)
-    log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(by_phone_f)+'\r\n')
+    # log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(by_phone_f)+'\r\n')
+    log.debug("Search by number {}".format(str(search_number)))
     return by_phone

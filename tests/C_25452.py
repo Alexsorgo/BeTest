@@ -2,30 +2,27 @@ import bert
 import paho.mqtt.client as mqtt
 
 from configs import config
-from erlastic import Atom
 from parsers import create_group_parser
 from tests.base_test import Auth
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_PHONE = config.AMERICA_NUMBER
+FRIEND_PHONE = config.JAPAN_NUMBER
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to search and send friend request to another user by phonebook"""
+    """User have ability to create group chat with avatar"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            log.info("Reconnected successfully \r\n")
+            log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
-        if data[0] == Atom('Room'):
-            client.disconnect()
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)

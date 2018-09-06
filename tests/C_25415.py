@@ -5,11 +5,13 @@ from configs import config
 from erlastic import Atom
 from parsers import friend_by_phonebook_parser
 from tests.base_test import Auth
+from utils.convector import string_to_bytes
 from utils.logs import log
+from utils.verify import Verify
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_PHONE = config.UKRAINE_NUMBER
+FRIEND_PHONE = config.RUSSIA_NUMBER
 
 
 class Logined(mqtt.Client):
@@ -18,15 +20,16 @@ class Logined(mqtt.Client):
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            log.info("Reconnected successfully \r\n")
+            log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         friend_by_phonebook_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
-        log.info("Verify contact found")
         if data[0] == Atom('Contact') and data[-1] == Atom('request'):
             log.info("Friend request send")
+            Verify.true(data[0] == Atom('Contact') and data[-1] == Atom('request') and
+                        data[1].split(b'_')[0] == string_to_bytes(FRIEND_PHONE), 'No request send')
             client.disconnect()
         if data == (Atom('io'), Atom('invalid_data'), b''):
             log.error("Request already send")

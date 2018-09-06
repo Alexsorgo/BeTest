@@ -1,6 +1,7 @@
 import bert
 
 from erlastic import Atom
+from utils.logs import log
 
 
 def accept_friend(phone_id, friend_id):
@@ -12,5 +13,6 @@ def accept_friend(phone_id, friend_id):
                                             # | request | confirm | update
     request_f = (module,phone_id,friend_id,settings,status)
     request = bert.encode(request_f)
-    print('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    # log.debug('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.debug("Accept friend request from {}".format(str(friend_id)))
     return request

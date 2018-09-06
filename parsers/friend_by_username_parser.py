@@ -22,7 +22,7 @@ def parser(client, payload, main_number, friend_username):
             if data[2][6]:
                 friend = data[2][6][0][1]
                 my = main_number + '_' + str(user_id)
-                log.debug("Add user {} \r\n".format(str(friend)))
+                log.debug("Add user {}".format(str(friend)))
                 client.publish(topic="events/1//api/anon//", payload=bytearray(
                     invite_friend(my, friend)), qos=2, retain=False)
             if not data[2][6]:

@@ -6,7 +6,7 @@ from utils.logs import log
 
 
 def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
-                 friend_firstname, friend_lastname, friend_alias):
+                 friend_firstname, friend_lastname, friend_alias, group_avatar):
     module = Atom('Room')
     room_id = 'Autotest_security'+str(time.time()).split('.')[0]  # id          = [] :: [] | binary(),
     name = 'Test group'                                                 # name        = [] :: [] | binary(),
@@ -59,10 +59,20 @@ def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
     update = []                                                     # update      = 0  :: [] | integer(),
     created = []                                                    # created     = 0  :: [] | integer(),
     room_status = Atom('create')                                    #  status      = [] :: [] | create | leave| add | remove | patch | get | delete | last_msg}).
+    if group_avatar:
+        avatar_module = Atom('Desc')
+        avatar_id = 'Autotest_avatar'+str(time.time()).split('.')[0]
+        mime = 'image'
+        # avatar_payload = "https://s3-us-west-2.amazonaws.com/nynja-defaults/Image_153310818583129_86FC1EF5-C297-4A1A-9FA1-A7D3C5E27E0E1533108186.jpg"
+        avatar_payload = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-682370.jpg"
+        parentid = []
+        avatar_data = []
+        data = [(avatar_module,avatar_id,mime,avatar_payload,parentid,avatar_data)]
 
     request_f = (module,room_id,name,links,description,settings,members,admins,data,room_type,
                  tos,tos_update,unread,mentions,readers,last_msg,update,created,room_status)
 
     request = bert.encode(request_f)
-    log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    # log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.debug("Send group creation request")
     return request

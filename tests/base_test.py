@@ -17,20 +17,19 @@ class Auth(mqtt.Client):
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            log.info('Send login \r\n')
             client.publish(topic="events/1//api/anon//", payload=bytearray(login(self.my_number)), qos=2,
                            retain=False)
 
     def on_message(self, client, userdata, msg):
-        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(bert.decode(bytes(msg.payload))) + '\r\n')
+        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(bert.decode(bytes(msg.payload))) + '\r\n')
         for node in (bert.decode(bytes(msg.payload))):
             if node == (Atom('ok'), Atom('sms_sent')):
                 client.publish(topic="events/1//api/anon//", payload=bytearray(sms(self.my_number)), qos=2,
                                retain=False)
             if re.findall(r"\(Atom\('ok2'\), Atom\('login'\)", str(node)):
-                ''' Запись новых clien_id и password '''
                 self.clien = str(node[2][0].decode("utf-8"))
                 self.pswd = str(node[2][1].decode("utf-8"))
+                log.info('Got client {} and password {}'.format(self.clien, self.pswd))
                 client.disconnect()
 
     def run(self, my_number):

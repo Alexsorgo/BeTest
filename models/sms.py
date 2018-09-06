@@ -24,5 +24,6 @@ def sms(main_number):
     request_f = (module, client_id, dev_key, user_id, phone, token, type_r, sms_code, attempts, services,
                  settings, push, os, created, last_online)
     request = bert.encode(request_f)
-    log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    # log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(request_f)+'\r\n')
+    log.debug("Send sms verify")
     return request
