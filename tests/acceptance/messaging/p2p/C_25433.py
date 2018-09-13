@@ -10,7 +10,7 @@ from utils.logs import log
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
-CHAT_TYPE = 'group'
+CHAT_TYPE = 'p2p'
 
 
 class Logined(mqtt.Client):

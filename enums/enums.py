@@ -1,1 +1,1 @@
-mime = ['text', 'audio', 'image', 'video', 'thumb']
+mime = ['text', 'audio', 'image', 'video', 'thumb', 'location']

@@ -2,14 +2,14 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser, send_message_parser
+from parsers import send_message_parser
 from tests.acceptance.base_test import Auth
-from utils.data_generation import magic
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
+CHAT_TYPE = 'group'
 
 
 class Logined(mqtt.Client):
@@ -21,9 +21,9 @@ class Logined(mqtt.Client):
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        send_message_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'image')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'image')
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)

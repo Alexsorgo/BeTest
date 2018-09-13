@@ -7,7 +7,7 @@ from utils.data_generation import magic
 from utils.logs import log
 
 
-def send_message(main_id, friend_id, chat, mime):
+def send_message(main_id, friend_id, chat, mime, message_id, message_type, created=None):
     module = Atom('Message')
     id_r = []
     container = Atom('chain')
@@ -69,12 +69,40 @@ def send_message(main_id, friend_id, chat, mime):
                                           'A186-4D7D-8719-BC439C15D4AC_153657407374066', 'RESOLUTION', '256:171',
                          'FILE_DATA')]
             files = desc_model(mime, payload, features)
+
+        if mime == 'video':
+            payload = "https://s3-us-west-2.amazonaws.com/nynja-defaults/" \
+                      "tmp_1536658896_B3C85DE6-D7BE-4870-BD03-BDC69FDFE0EF.mp4"
+            features = [
+                (Atom('Feature'), '2EC12976-9521-48E7-9898-D1CE304CD34F_817090909090_661_size_CCE6EA22-4152-476C-BBFB-'
+                                  'A0AA17A6D6D0_153665894794709', 'SIZE', '22935809', 'FILE_DATA'),
+                (Atom('Feature'), '2EC12976-9521-48E7-9898-D1CE304CD34F_817090909090_661_duration_AAADD0A7-BE02-4EF8-'
+                                  '82CF-4B74683C7EEE_153665889713910', 'DURATION', '58000', 'FILE_DATA'),
+                (Atom('Feature'),'2EC12976-9521-48E7-9898-D1CE304CD34F_817090909090_661_filename_76848893-8F18-4523-'
+                                 '319-BEA112BB4D94_153665894794633', 'FILENAME', 'tmp_1536658896_B3C85DE6-D7BE-4870-'
+                                                                                 'BD03-BDC69FDFE0EF.mp4', 'FILE_DATA')]
+            files = desc_model(mime, payload, features)
+
+        if mime == 'location':
+            payload = "37.785834,-122.406417"
+            features = []
+            files = desc_model(mime, payload, features)
+
     type_m = []
     link = []
     seenby = []
     repliedby = []
     mentioned = []
     status = []
+    if message_type == 'reply':
+        type_m = [Atom('reply')]
+        link = message_id
+    if message_type == 'edit':
+        type_m = [Atom('edited')]
+        status = Atom('edit')
+        id_r = message_id
+        created = created
+
     request_f = (module, id_r, container, feed_id, prev, next_r, msg_id, from_r2, to_r2, created, [files],
                  type_m, link, seenby, repliedby, mentioned, status)
     request = bert.encode(request_f)

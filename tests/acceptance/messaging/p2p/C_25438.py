@@ -10,7 +10,7 @@ from utils.logs import log
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
-CHAT_TYPE = 'group'
+CHAT_TYPE = 'p2p'
 
 
 class Logined(mqtt.Client):
@@ -22,9 +22,9 @@ class Logined(mqtt.Client):
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'audio')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'text', 'reply')
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
@@ -38,7 +38,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25478():
+def test_25479():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

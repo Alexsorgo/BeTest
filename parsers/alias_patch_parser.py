@@ -23,9 +23,9 @@ def parser(client, payload, new_alias):
                                 global member_id
                                 member_id = member_field[0][1]
 
-    client.publish(topic="events/1//api/anon//", payload=bytearray(
-        member(member_id, new_alias)), qos=2,
-                   retain=False)
+        client.publish(topic="events/1//api/anon//", payload=bytearray(
+            member(member_id, new_alias)), qos=2,
+                       retain=False)
 
     if data[0] == Atom('Member'):
         log.debug('Verify member patched')

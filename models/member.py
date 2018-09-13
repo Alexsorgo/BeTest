@@ -6,7 +6,7 @@ from utils.logs import log
 def member(member_id, new_alias):
     module = Atom('Member')
     # id = member_id
-    id = 2082
+    id = member_id
     container = Atom('chain')
     feed_id = []
     prev = []
