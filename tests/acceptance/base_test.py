@@ -21,7 +21,7 @@ class Auth(mqtt.Client):
                            retain=False)
 
     def on_message(self, client, userdata, msg):
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(bert.decode(bytes(msg.payload))) + '\r\n')
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(bert.decode(bytes(msg.payload))) + '\r\n')
         for node in (bert.decode(bytes(msg.payload))):
             if node == (Atom('ok'), Atom('sms_sent')):
                 client.publish(topic="events/1//api/anon//", payload=bytearray(sms(self.my_number)), qos=2,

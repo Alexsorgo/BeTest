@@ -5,6 +5,7 @@ from configs import config
 from erlastic import Atom
 from parsers import registration_parser
 from tests.acceptance.base_test import Auth
+from utils.convector import string_to_bytes
 from utils.logs import log
 from utils.verify import Verify
 
@@ -24,11 +25,11 @@ class Logined(mqtt.Client):
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         registration_parser.parser(client, msg.payload, MAIN_FIRST_NAME, MAIN_LAST_NAME)
         if data[0] == Atom('Roster') and (data[-1]) == Atom('patch'):
             log.info("Verify user register")
-            Verify.true(data[2] == bytes(str(MAIN_FIRST_NAME).encode('utf-8')), 'First Name doesnt update')
+            Verify.true(data[2] == string_to_bytes(MAIN_FIRST_NAME), 'First Name doesnt update')
             client.disconnect()
         if data == (Atom('io'), Atom('invalid_data'), b''):
             log.error("Something going wrong")

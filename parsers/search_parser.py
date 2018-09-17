@@ -1,6 +1,6 @@
 import bert
 from erlastic import Atom
-from models.search_by_phone import search_by_phone
+from models.search_by_phone import search
 
 
 def parser(client, payload, number, friend_phone):
@@ -12,4 +12,4 @@ def parser(client, payload, number, friend_phone):
             roas = (bert.decode(bytes(payload))[3])
             user_id = roas[0][1]
             client.publish(topic="events/1//api/anon//", payload=bytearray(
-                search_by_phone(user_id, friend_phone)), qos=2, retain=False)
+                search(user_id, friend_phone)), qos=2, retain=False)

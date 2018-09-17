@@ -1,6 +1,6 @@
 import bert
 from erlastic import Atom
-from models.accept_friend import accept_friend
+from models.invite_friend import friend
 
 
 def parser(client, payload, main_number):
@@ -15,4 +15,4 @@ def parser(client, payload, main_number):
             for field in contacts:
                 if field[0] == Atom('Contact') and field[-1] == Atom('authorization'):
                     client.publish(topic="events/1//api/anon//", payload=bytearray(
-                        accept_friend(my, field[1])), qos=2, retain=False)
+                        friend(my_id=my, friend_id=field[1], status=Atom('confirm'))), qos=2, retain=False)

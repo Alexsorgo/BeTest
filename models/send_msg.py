@@ -3,18 +3,19 @@ import time
 
 from enums import enums
 from erlastic import Atom
+from models.desc import desc_model
 from utils.data_generation import magic
 from utils.logs import log
 
 
-def send_message(main_id, friend_id, chat, mime, message_id, message_type, created=None):
+def send_message(main_id, friend_id, chat, mime, message_id, message_type, member_id=None):
     module = Atom('Message')
     id_r = []
     container = Atom('chain')
     feed_id = chat
     prev = []
     next_r = []
-    msg_id = 'Autotest_security' + str(time.time()).split('.')[0]
+    msg_id = 'Autotest_message_id_' + str(time.time()).split('.')[0]
     from_r2 = main_id
     to_r2 = friend_id
     created = []
@@ -97,24 +98,30 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, creat
     if message_type == 'reply':
         type_m = [Atom('reply')]
         link = message_id
+    if message_type == 'forward':
+        type_m = [Atom('forward')]
+        link = message_id
+        container = []
     if message_type == 'edit':
         type_m = [Atom('edited')]
         status = Atom('edit')
         id_r = message_id
         created = created
+    if message_type == 'delete for all':
+        status = Atom('delete')
+        seenby = [-1]
+        id_r = message_id
+        created = created
+        files = []
+    if message_type == 'delete for me':
+        status = Atom('delete')
+        seenby = [member_id]
+        id_r = message_id
+        created = created
+        files = []
 
     request_f = (module, id_r, container, feed_id, prev, next_r, msg_id, from_r2, to_r2, created, [files],
                  type_m, link, seenby, repliedby, mentioned, status)
     request = bert.encode(request_f)
     log.debug('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(request_f) + '\r\n')
     return request
-
-
-def desc_model(mime, payload, data):
-    desc_module = Atom('Desc')
-    desc_id = 'Autotest_security' + str(time.time()).split('.')[0]
-    desc_mime = mime
-    desc_payload = payload
-    parentid = []
-    data = data
-    return desc_module, desc_id, desc_mime, desc_payload, parentid, data

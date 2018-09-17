@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser, alias_patch_parser
+from parsers import alias_patch_parser
 from tests.acceptance.base_test import Auth
 from utils.data_generation import magic
 from utils.logs import log

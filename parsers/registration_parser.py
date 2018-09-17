@@ -12,4 +12,5 @@ def parser(client, payload, first_name, last_name):
             roas = (bert.decode(bytes(payload))[3])
             userid = roas[0][1]
             client.publish(topic="events/1//api/anon//", payload=bytearray(
-                update_name(userid, first_name, last_name)), qos=2, retain=False)
+                update_name(user_id=userid, first_name=first_name, last_name=last_name, status=Atom('patch'))), qos=2,
+                           retain=False)

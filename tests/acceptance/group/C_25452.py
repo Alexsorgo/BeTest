@@ -21,7 +21,7 @@ class Logined(mqtt.Client):
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
 
     def run(self, pswa):

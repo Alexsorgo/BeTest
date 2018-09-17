@@ -2,9 +2,8 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser, send_message_parser
+from parsers import send_message_parser
 from tests.acceptance.base_test import Auth
-from utils.data_generation import magic
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
