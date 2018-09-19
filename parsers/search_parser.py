@@ -1,6 +1,6 @@
 import bert
 from erlastic import Atom
-from models.search_by_phone import search
+from models.search_model import search
 
 
 def parser(client, payload, number, friend_phone):

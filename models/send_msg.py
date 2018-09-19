@@ -89,6 +89,11 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
             features = []
             files = desc_model(mime, payload, features)
 
+        if mime == 'sticker':
+            payload = "https://s3.eu-central-1.amazonaws.com/sticker-packs/defaults/ny1.png"
+            features = []
+            files = desc_model(mime, payload, features)
+
     type_m = []
     link = []
     seenby = []
@@ -123,5 +128,5 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
     request_f = (module, id_r, container, feed_id, prev, next_r, msg_id, from_r2, to_r2, created, [files],
                  type_m, link, seenby, repliedby, mentioned, status)
     request = bert.encode(request_f)
-    log.debug('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(request_f) + '\r\n')
+    # log.debug('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(request_f) + '\r\n')
     return request

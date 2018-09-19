@@ -34,7 +34,7 @@ class Auth(mqtt.Client):
 
     def run(self, my_number):
         self.my_number = my_number
-        self.will_set(topic="version/8", payload=None, qos=2, retain=False)
+        self.will_set(topic="version/9", payload=None, qos=2, retain=False)
         self.username_pw_set(username="api", password=None)
         self.connect(self.server, 1883, 60)
 

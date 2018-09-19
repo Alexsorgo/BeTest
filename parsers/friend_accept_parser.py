@@ -1,6 +1,6 @@
 import bert
 from erlastic import Atom
-from models.invite_friend import friend
+from models.friend_model import friend
 
 
 def parser(client, payload, main_number):

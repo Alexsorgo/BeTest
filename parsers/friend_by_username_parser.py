@@ -1,7 +1,7 @@
 import bert
 from erlastic import Atom
-from models.invite_friend import friend
-from models.search_by_phone import search
+from models.friend_model import friend
+from models.search_model import search
 from utils.logs import log
 
 global user_id
@@ -21,11 +21,11 @@ def parser(client, payload, main_number, friend_username):
 
         if node == Atom('io') and data[1] == (Atom('ok'), b'username'):
             if data[2][6]:
-                friend = data[2][6][0][1]
+                friend_id = data[2][6][0][1]
                 my = main_number + '_' + str(user_id)
-                log.debug("Add user {}".format(str(friend)))
+                log.debug("Add user {}".format(str(friend_id)))
                 client.publish(topic="events/1//api/anon//", payload=bytearray(
-                    friend(my_id=my, friend_id=friend, status=Atom('request'))), qos=2, retain=False)
+                    friend(my_id=my, friend_id=friend_id, status=Atom('request'))), qos=2, retain=False)
             if not data[2][6]:
                 log.debug('Contact not found')
                 client.disconnect()

@@ -1,29 +1,30 @@
+import bert
 import paho.mqtt.client as mqtt
 
-import bert
 from configs import config
-from parsers import send_message_parser
+from enums import enums
+from parsers import ban_parser
 from tests.acceptance.base_test import Auth
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_NUMBER = config.JAPAN_NUMBER
-CHAT_TYPE = 'group'
+FRIEND_PHONE = config.JAPAN_NUMBER
+STATUS = enums.FRIEND_UNBAN
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to search and send friend request to another user by phone number"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'audio')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        ban_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE, STATUS)
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
@@ -37,7 +38,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25478():
+def test_25450():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

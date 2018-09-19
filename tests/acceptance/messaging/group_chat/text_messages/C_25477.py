@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import send_message_parser
+from parsers import send_message_parser, forward_message_parser, sheduled_parser
 from tests.acceptance.base_test import Auth
 from utils.logs import log
 
@@ -21,9 +21,9 @@ class Logined(mqtt.Client):
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'audio')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        sheduled_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'text')
 
     def run(self, pswa):
         self.will_set(topic="version/8", payload=None, qos=2, retain=False)
@@ -37,7 +37,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25478():
+def test_25477():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

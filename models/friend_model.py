@@ -19,5 +19,4 @@ def friend(**data):
 
     by_phone = bert.encode(request_f)
     # log.info('='*5 + 'REQUEST' + '='*5 + '\r\n'+ str(invite_f)+'\r\n')
-    log.debug("Send friend request to {}".format(str(my_dict['friend_id'])))
     return by_phone
