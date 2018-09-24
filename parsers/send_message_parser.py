@@ -34,8 +34,16 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                         chat = field[8][3]
                         message_id = field[8][1]
 
-            client.publish(topic="events/1//api/anon//", payload=bytearray(
-                send_message(main_id, friend_id, chat, mime, message_id, message_type)), qos=2, retain=False)
+            member_id = main_id
+
+            if message_type in ['delete for all', 'delete for me']:
+                client.publish(topic="events/1//api/anon//", payload=bytearray(
+                    send_message(main_id, friend_id, chat, mime, message_id, message_type=None)), qos=2, retain=False)
+
+            else:
+                client.publish(topic="events/1//api/anon//", payload=bytearray(
+                    send_message(main_id, friend_id, chat, mime, message_id, message_type, member_id)), qos=2,
+                               retain=False)
 
         if chat_type == 'group':
             for field in data[3][0][6]:

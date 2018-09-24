@@ -1,6 +1,7 @@
 import bert
 from erlastic import Atom
 from models.friend_model import friend
+from utils.logs import log
 
 
 def parser(client, payload, main_number):
@@ -16,3 +17,12 @@ def parser(client, payload, main_number):
                 if field[0] == Atom('Contact') and field[-1] == Atom('authorization'):
                     client.publish(topic="events/1//api/anon//", payload=bytearray(
                         friend(my_id=my, friend_id=field[1], status=Atom('confirm'))), qos=2, retain=False)
+
+    if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+

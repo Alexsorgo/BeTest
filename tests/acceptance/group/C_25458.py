@@ -26,7 +26,7 @@ class Logined(mqtt.Client):
         group_patch_parser.parser(client, msg.payload, GROUP_NAME)
 
     def run(self, pswa):
-        self.will_set(topic="version/8", payload=None, qos=2, retain=False)
+        self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)
         self.username_pw_set(username="api", password=pswa)
         self.connect(SERVER, 1883, 60)
 

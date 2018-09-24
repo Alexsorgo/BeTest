@@ -29,3 +29,11 @@ def parser(client, payload, main_number, friend_username):
             if not data[2][6]:
                 log.debug('Contact not found')
                 client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
+        log.error("Something going wrong")
+        client.disconnect()

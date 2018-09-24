@@ -15,7 +15,7 @@ STATUS = enums.FRIEND_BAN
 
 class Logined(mqtt.Client):
 
-    """User have ability to search and send friend request to another user by phone number"""
+    """User have ability to ban other user"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -27,7 +27,7 @@ class Logined(mqtt.Client):
         ban_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE, STATUS)
 
     def run(self, pswa):
-        self.will_set(topic="version/8", payload=None, qos=2, retain=False)
+        self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)
         self.username_pw_set(username="api", password=pswa)
         self.connect(SERVER, 1883, 60)
 

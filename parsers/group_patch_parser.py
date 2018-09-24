@@ -1,6 +1,7 @@
 import bert
 from erlastic import Atom
 from models.patch_group import patch_group
+from utils.convector import string_to_bytes
 from utils.logs import log
 from utils.verify import Verify
 
@@ -29,5 +30,6 @@ def parser(client, payload, room_name):
         log.debug('Verify group patched')
         for field in data:
             if field and list == type(field) and tuple == type(field[0]):
-                Verify.equals(my_alias+b' patched group', field[0][3], 'No message about patch')
+                print(field[0][3])
+                Verify.equals(b'Group is renamed to "'+string_to_bytes(room_name)+b'"', field[0][3], 'No message about patch')
         client.disconnect()

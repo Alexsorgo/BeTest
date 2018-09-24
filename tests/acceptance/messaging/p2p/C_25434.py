@@ -2,9 +2,8 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser, send_message_parser
+from parsers import send_message_parser
 from tests.acceptance.base_test import Auth
-from utils.data_generation import magic
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
@@ -27,7 +26,7 @@ class Logined(mqtt.Client):
         send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'image')
 
     def run(self, pswa):
-        self.will_set(topic="version/8", payload=None, qos=2, retain=False)
+        self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)
         self.username_pw_set(username="api", password=pswa)
         self.connect(SERVER, 1883, 60)
 

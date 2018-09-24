@@ -8,7 +8,7 @@ from utils.data_generation import magic
 from utils.logs import log
 
 
-def send_message(main_id, friend_id, chat, mime, message_id, message_type, member_id=None):
+def send_message(main_id, friend_id, chat, mime, message_id, message_type, member_id=None, message_text=None):
     module = Atom('Message')
     id_r = []
     container = Atom('chain')
@@ -54,7 +54,11 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
             files = desc_model(mime, payload, features)
 
         if mime == 'text':
-            payload = magic.get_word
+            # if message_text:
+            #     payload = message_text
+            # else:
+            #     payload = magic.get_word
+            payload = "8613151713157_108 its not a bug, need more information"
             features = []
             files = desc_model(mime, payload, features)
 
@@ -94,7 +98,7 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
             features = []
             files = desc_model(mime, payload, features)
 
-    type_m = []
+    type_m = [Atom('sys')]
     link = []
     seenby = []
     repliedby = []
@@ -128,5 +132,5 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
     request_f = (module, id_r, container, feed_id, prev, next_r, msg_id, from_r2, to_r2, created, [files],
                  type_m, link, seenby, repliedby, mentioned, status)
     request = bert.encode(request_f)
-    # log.debug('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(request_f) + '\r\n')
+    log.debug('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(request_f) + '\r\n')
     return request

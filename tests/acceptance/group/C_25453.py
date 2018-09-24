@@ -21,11 +21,11 @@ class Logined(mqtt.Client):
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE, True, True)
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        create_group_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE, True)
 
     def run(self, pswa):
-        self.will_set(topic="version/8", payload=None, qos=2, retain=False)
+        self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)
         self.username_pw_set(username="api", password=pswa)
         self.connect(SERVER, 1883, 60)
 

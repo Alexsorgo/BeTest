@@ -44,3 +44,11 @@ def parser(client, payload, main_number, friend_number, status):
         if data[0] == Atom("Contact") and data[-1] == Atom('friend'):
             log.debug('Contact Unbanned')
             client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
