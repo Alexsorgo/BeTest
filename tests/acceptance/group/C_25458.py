@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser
+from parsers import group_patch_parser
 from tests.acceptance.base_test import Auth
 from utils.data_generation import magic
 from utils.logs import log
@@ -14,15 +14,15 @@ GROUP_NAME = magic.get_word
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to update group name"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         group_patch_parser.parser(client, msg.payload, GROUP_NAME)
 
     def run(self, pswa):

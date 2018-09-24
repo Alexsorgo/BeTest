@@ -2,14 +2,9 @@ import bert
 from erlastic import Atom
 from models.send_msg import send_message
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 from utils.verify import Verify
-
-global main_id
-global friend_id
-global chat
-global message_id
-global member_id
 
 
 def parser(chat_type, client, payload, main_number, friend_number, mime, message_type=None):
@@ -85,7 +80,9 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
     elif data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise InvalidData("Invalid data response")
 
     if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise PermissionDenied("No permission")

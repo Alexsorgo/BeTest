@@ -14,7 +14,7 @@ ALIAS = magic.get_word
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to update own alias in group"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

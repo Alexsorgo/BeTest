@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import send_message_parser, forward_message_parser, sheduled_parser
+from parsers import sheduled_parser
 from tests.acceptance.base_test import Auth
 from utils.logs import log
 
@@ -14,7 +14,7 @@ CHAT_TYPE = 'group'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to create schedule message in group chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

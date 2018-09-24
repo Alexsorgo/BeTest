@@ -6,6 +6,7 @@ from models.feature_model import feature
 from models.job import job, act
 from models.send_msg import send_message
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 from utils.verify import Verify
 
@@ -67,14 +68,16 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                     settings=feature_model, status=Atom('init'))), qos=2, retain=False)
 
     elif data[0] == Atom('Job') and data[-1] == Atom('pending'):
-        log.debug('Verify')
-        log.debug(data)
+        log.debug('Verify job go to pending')
+        Verify.true(data[0] == Atom('Job') and data[-1] == Atom('pending'), 'Job not in pending')
         client.disconnect()
 
     elif data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise InvalidData("Invalid data response")
 
     if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise PermissionDenied("No permission")

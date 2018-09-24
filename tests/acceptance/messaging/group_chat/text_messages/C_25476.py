@@ -2,19 +2,20 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import send_message_parser, forward_message_parser
+from parsers import forward_message_parser
 from tests.acceptance.base_test import Auth
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
+# here must be another chat, coz we send message in p2p before
 CHAT_TYPE = 'p2p'
 
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send text forward message group chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

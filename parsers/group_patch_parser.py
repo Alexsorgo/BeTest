@@ -2,15 +2,15 @@ import bert
 from erlastic import Atom
 from models.patch_group import patch_group
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 from utils.verify import Verify
-
-global room_id
-global my_alias
 
 
 def parser(client, payload, room_name):
     data = bert.decode(bytes(payload))
+    global room_id
+    global my_alias
 
     if data[0] == Atom("Profile"):
         for field in data:
@@ -33,3 +33,13 @@ def parser(client, payload, room_name):
                 print(field[0][3])
                 Verify.equals(b'Group is renamed to "'+string_to_bytes(room_name)+b'"', field[0][3], 'No message about patch')
         client.disconnect()
+
+    if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+        raise InvalidData("Invalid data response")
+
+    if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
+        log.error("Something going wrong")
+        client.disconnect()
+        raise PermissionDenied("No permission")
