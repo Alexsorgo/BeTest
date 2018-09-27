@@ -54,11 +54,10 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
             files = desc_model(mime, payload, features)
 
         if mime == 'text':
-            # if message_text:
-            #     payload = message_text
-            # else:
-            #     payload = magic.get_word
-            payload = "8613151713157_108 its not a bug, need more information"
+            if message_text:
+                payload = message_text
+            else:
+                payload = magic.get_word
             features = []
             files = desc_model(mime, payload, features)
 
@@ -98,7 +97,7 @@ def send_message(main_id, friend_id, chat, mime, message_id, message_type, membe
             features = []
             files = desc_model(mime, payload, features)
 
-    type_m = [Atom('sys')]
+    type_m = []
     link = []
     seenby = []
     repliedby = []
