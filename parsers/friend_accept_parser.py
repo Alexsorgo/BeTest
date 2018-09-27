@@ -1,6 +1,7 @@
 import bert
 from erlastic import Atom
 from models.friend_model import friend
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 
 
@@ -21,8 +22,10 @@ def parser(client, payload, main_number):
     if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise InvalidData("Invalid data response")
 
     if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise PermissionDenied("No permission")
 

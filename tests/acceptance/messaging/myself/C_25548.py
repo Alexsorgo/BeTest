@@ -12,7 +12,7 @@ SERVER = config.SERVER
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send video message in myself chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

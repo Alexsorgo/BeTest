@@ -14,7 +14,7 @@ CHAT_TYPE = 'group'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to forward message from group chat to p2p chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:

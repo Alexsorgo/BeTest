@@ -14,15 +14,15 @@ CHAT_TYPE = 'p2p'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send voice message in myself chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         myself_parser.parser(client, msg.payload, MAIN_NUMBER, 'audio')
 
     def run(self, pswa):

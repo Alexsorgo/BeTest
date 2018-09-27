@@ -37,7 +37,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25479():
+def test_25480():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

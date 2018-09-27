@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import pytest
 
 import bert
 from configs import config
@@ -11,10 +12,10 @@ SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
 CHAT_TYPE = 'p2p'
 
-
+@pytest.mark.skip
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to create scheduled message in p2p chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -37,7 +38,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25477():
+def test_25432():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

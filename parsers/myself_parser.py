@@ -4,6 +4,7 @@ from models.message_model import message_model
 from models.p2p_model import p2p
 from models.send_msg import send_message
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 from utils.verify import Verify
 
@@ -47,7 +48,9 @@ def parser(client, payload, main_number, mime, message_type=None):
     elif data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise InvalidData("Invalid data response")
 
     if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise PermissionDenied("No permission")

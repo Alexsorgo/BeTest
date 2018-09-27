@@ -25,7 +25,7 @@ class Logined(mqtt.Client):
 
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         friend_by_phone_parser.parser(client, msg.payload, MAIN_NUMBER, FRIEND_PHONE)
         if data[0] == Atom('Contact') and data[-1] == Atom('request'):
             log.info("Friend request send")

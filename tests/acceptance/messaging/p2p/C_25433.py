@@ -14,15 +14,15 @@ CHAT_TYPE = 'p2p'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send voice message in p2p chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             log.info("Reconnected successfully")
 
     def on_message(self, client, userdata, msg):
-        # data = bert.decode(bytes(msg.payload))
-        # log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
+        data = bert.decode(bytes(msg.payload))
+        log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
         send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'audio')
 
     def run(self, pswa):
@@ -37,7 +37,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25478():
+def test_25433():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)

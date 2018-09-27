@@ -3,7 +3,7 @@ from erlastic import Atom
 from utils.logs import log
 
 
-def update_name(**data):
+def roster(**data):
     module = Atom('Roster')
     expected = ['user_id', 'first_name', 'last_name', 'email', 'my_username', 'user_list', 'room_list', 'favorite',
                 'tags', 'phone', 'avatar', 'update', 'status']

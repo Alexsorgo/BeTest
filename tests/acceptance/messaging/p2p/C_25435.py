@@ -2,9 +2,8 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import clear_history_parser, group_patch_parser, send_message_parser
+from parsers import  send_message_parser
 from tests.acceptance.base_test import Auth
-from utils.data_generation import magic
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
@@ -15,7 +14,7 @@ CHAT_TYPE = 'p2p'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send video message in p2p chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -38,7 +37,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25479():
+def test_25435():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)
