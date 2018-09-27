@@ -14,7 +14,7 @@ CHAT_TYPE = 'p2p'
 
 class Logined(mqtt.Client):
 
-    """User have ability to create group chat with avatar"""
+    """User have ability to send sticker as message to myself chat"""
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -37,7 +37,7 @@ class Logined(mqtt.Client):
         return rc
 
 
-def test_25535():
+def test_27189():
     client_id = "reg_" + MAIN_NUMBER
     mqtt_client = Auth(client_id=client_id, clean_session=False)
     _, pswa = mqtt_client.run(MAIN_NUMBER)
