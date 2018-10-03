@@ -27,23 +27,35 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                 if field[8]:
                     p2p_chat = field[8][3]
 
-        group_chat = data[3][0][7][-1][6][0][3]
+        group_chat = data[3][0][7][-1][7][0][3]
         group_friend_id = data[3][0][7][-1][1]
 
-        if chat_type == 'p2p':
+        if chat_type == 'p2p' or chat_type == 'myself':
             for field in data[3][0][6]:
                 if field[-1] == Atom('friend'):
                     if field[1].split(b'_')[0] == string_to_bytes(main_number):
                         log.debug('Main profile found')
                         main_id = field[1]
-                    if field[0] == Atom('Contact') and field[-1] == Atom('friend') and \
-                            field[1].split(b'_')[0] == string_to_bytes(friend_number):
-                        friend_id = field[1]
-                    if field[8]:
-                        message_id = field[8][1]
+                        if chat_type == 'myself':
+                            friend_id = main_id
+                            message_id = field[8][1]
+                            p2p_chat = field[8][3]
+                        if chat_type == 'p2p':
+                            if field[0] == Atom('Contact') and field[-1] == Atom('friend') and \
+                                    field[1].split(b'_')[0] == string_to_bytes(friend_number):
+                                friend_id = field[1]
+                                if field[8]:
+                                    message_id = field[8][1]
+                                    p2p_chat = field[8][3]
 
+            feature_model = feature(id='Autotest_feature_id' + str(time.time()).split('.')[0], key='TimeZone',
+                                    value='Europe/Kiev', group='JOB_TIMEZONE')
+            message_model = bert.decode(send_message(main_id, friend_id, p2p_chat, mime, data[1], message_type))
+            act_model = act(name='publish', data=main_id)
+            time_plus_ten_min = (int(str(time.time()).split('.')[0]) + 6000) * 1000
             client.publish(topic="events/1//api/anon//", payload=bytearray(
-                send_message(main_id, friend_id, p2p_chat, mime, message_id, message_type)), qos=2, retain=False)
+                job(feed_id=act_model, time=time_plus_ten_min, data=[message_model],
+                    settings=feature_model, status=Atom('init'))), qos=2, retain=False)
 
         if chat_type == 'group':
             for field in data[3][0][6]:
@@ -54,7 +66,7 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
 
             message_id = data[3][0][7][-1][15][1]
             friend_id = data[3][0][7][-1][1]
-            member_id = data[3][0][7][-1][6][0][1]
+            member_id = data[3][0][7][-1][7][0][1]
 
             log.debug('Send job')
             feature_model = feature(id='Autotest_feature_id'+str(time.time()).split('.')[0], key='TimeZone',

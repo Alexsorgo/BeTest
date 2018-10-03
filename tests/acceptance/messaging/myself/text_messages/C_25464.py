@@ -2,14 +2,12 @@ import paho.mqtt.client as mqtt
 
 import bert
 from configs import config
-from parsers import send_message_parser
+from parsers import myself_parser
 from tests.acceptance.base_test import Auth
 from utils.logs import log
 
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
-FRIEND_NUMBER = config.JAPAN_NUMBER
-CHAT_TYPE = 'p2p'
 
 
 class Logined(mqtt.Client):
@@ -23,7 +21,7 @@ class Logined(mqtt.Client):
     def on_message(self, client, userdata, msg):
         data = bert.decode(bytes(msg.payload))
         log.info('='*5 + 'RESPONSE' + '='*5 + '\r\n'+ str(data) + '\r\n')
-        send_message_parser.parser(CHAT_TYPE, client, msg.payload, MAIN_NUMBER, FRIEND_NUMBER, 'text')
+        myself_parser.parser(client, msg.payload, MAIN_NUMBER, 'text')
 
     def run(self, pswa):
         self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)

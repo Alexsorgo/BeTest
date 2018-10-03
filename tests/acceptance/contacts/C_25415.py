@@ -6,6 +6,7 @@ from erlastic import Atom
 from parsers import friend_by_phonebook_parser
 from tests.acceptance.base_test import Auth
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData
 from utils.logs import log
 from utils.verify import Verify
 
@@ -34,6 +35,7 @@ class Logined(mqtt.Client):
         if data == (Atom('io'), Atom('invalid_data'), b''):
             log.error("Request already send")
             client.disconnect()
+            raise InvalidData("Invalid data response")
 
     def run(self, pswa):
         self.will_set(topic=config.PROTOCOL, payload=None, qos=2, retain=False)

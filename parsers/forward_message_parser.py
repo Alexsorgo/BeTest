@@ -27,7 +27,7 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                 if field[8]:
                     p2p_chat = field[8][3]
 
-        group_chat = data[3][0][7][-1][6][0][3]
+        group_chat = data[3][0][7][-1][7][0][3]
         group_friend_id = data[3][0][7][-1][1]
         for field in data[3][0][6]:
             if field[0] == Atom('Contact') and field[-1] == Atom('friend') and \
@@ -58,7 +58,7 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                         main_id = field[1]
 
             message_id = data[3][0][7][-1][15][1]
-            member_id = data[3][0][7][-1][6][0][1]
+            member_id = data[3][0][7][-1][7][0][1]
 
             d = send_message(main_id, group_friend_id, group_chat, mime, message_id, message_type, message_text=message_text)
             log.info('=' * 5 + 'REQUEST' + '=' * 5 + '\r\n' + str(bert.decode(d)) + '\r\n')

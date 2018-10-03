@@ -19,8 +19,8 @@ def parser(client, payload, first_name=None, last_name=None, user_name=None, ava
             avatar = []
             status = Atom('nick')
         elif avatar:
-            first_name = ''
-            last_name = ''
+            first_name = []
+            last_name = []
             user_name = ''
             status = Atom('patch')
         else:

@@ -10,9 +10,9 @@ from utils.logs import log
 MAIN_NUMBER = config.CHINA_NUMBER
 SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
-CHAT_TYPE = 'p2p'
+CHAT_TYPE = 'myself'
 
-@pytest.mark.skip
+
 class Logined(mqtt.Client):
 
     """User have ability to create scheduled message in myself chat"""

@@ -2,6 +2,7 @@ import bert
 from erlastic import Atom
 from models.create_group import create_group
 from utils.convector import string_to_bytes
+from utils.exception import InvalidData, PermissionDenied
 from utils.logs import log
 from utils.verify import Verify
 
@@ -38,8 +39,9 @@ def parser(client, payload, main_number, friend_phone, avatar=False, alias_check
     if data[0] == Atom('Room') and alias_check:
         log.info('Verify group created and alias exist')
         Verify.true((data[15][10][0][3] == user_id + b' created the group' and
-                     ([field[0][11] for field in data if field and list == type(field) and field[0][-1] ==
-                       Atom("admin")][0] == main_first_name + main_last_name)), "No message about creation")
+                     ([field[0][11] for field in data if field and list == type(field) and int != type(field[0]) and
+                       field[0][-1] == Atom("admin")][0] == main_first_name + main_last_name)),
+                    "No message about creation")
         client.disconnect()
 
     elif data[0] == Atom('Room'):
@@ -51,7 +53,9 @@ def parser(client, payload, main_number, friend_phone, avatar=False, alias_check
     if data == (Atom('io'), (Atom('error'), Atom('invalid_data')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise InvalidData("Invalid data response")
 
     if data == (Atom('io'), (Atom('error'), Atom('permission_denied')), b''):
         log.error("Something going wrong")
         client.disconnect()
+        raise PermissionDenied("No permission")

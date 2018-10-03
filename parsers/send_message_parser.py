@@ -25,9 +25,9 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                     if field[0] == Atom('Contact') and field[-1] == Atom('friend') and \
                             field[1].split(b'_')[0] == string_to_bytes(friend_number):
                         friend_id = field[1]
-                    if field[8]:
-                        chat = field[8][3]
-                        message_id = field[8][1]
+                        if field[8]:
+                            chat = field[8][3]
+                            message_id = field[8][1]
 
             member_id = main_id
 
@@ -48,9 +48,9 @@ def parser(chat_type, client, payload, main_number, friend_number, mime, message
                         main_id = field[1]
 
             message_id = data[3][0][7][-1][15][1]
-            chat = data[3][0][7][-1][6][0][3]
+            chat = data[3][0][7][-1][7][0][3]
             friend_id = data[3][0][7][-1][1]
-            member_id = data[3][0][7][-1][6][0][1]
+            member_id = data[3][0][7][-1][7][0][1]
 
             if message_type in ['delete for all', 'delete for me']:
                 client.publish(topic="events/1//api/anon//", payload=bytearray(

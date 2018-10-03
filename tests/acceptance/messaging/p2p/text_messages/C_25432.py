@@ -12,7 +12,7 @@ SERVER = config.SERVER
 FRIEND_NUMBER = config.JAPAN_NUMBER
 CHAT_TYPE = 'p2p'
 
-@pytest.mark.skip
+
 class Logined(mqtt.Client):
 
     """User have ability to create scheduled message in p2p chat"""
