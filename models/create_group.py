@@ -40,7 +40,6 @@ def create_group(main_id, main_firstname, main_lastname, main_alias, friend_id,
         mime = 'image'
         avatar_payload = "https://s3-us-west-2.amazonaws.com/nynja-defaults/Image_" \
                          "153310818583129_86FC1EF5-C297-4A1A-9FA1-A7D3C5E27E0E1533108186.jpg"
-        # avatar_payload = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-682370.jpg"
         parentid = []
         avatar_data = []
         data = [(avatar_module,avatar_id,mime,avatar_payload,parentid,avatar_data)]
