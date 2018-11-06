@@ -6,7 +6,7 @@ SERVER = '54.201.154.141' # dev
 # SERVER = '35.198.110.223' # pre-prod
 # SERVER = '35.198.84.145' # prod
 # SERVER = '192.168.0.103'
-PROTOCOL = 'version/9'
+PROTOCOL = 'version/10'
 
 # USERS:
 # User for test: main actions13

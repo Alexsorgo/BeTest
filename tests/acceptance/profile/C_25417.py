@@ -2,12 +2,9 @@ import bert
 import paho.mqtt.client as mqtt
 
 from configs import config
-from erlastic import Atom
-from parsers import registration_parser, roster_update_parser
+from parsers import roster_update_parser
 from tests.acceptance.base_test import Auth
-from utils.convector import string_to_bytes
 from utils.logs import log
-from utils.verify import Verify
 
 SERVER = config.SERVER
 MAIN_NUMBER = config.CHINA_NUMBER

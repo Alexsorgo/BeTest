@@ -16,7 +16,7 @@ def sms(main_number):
     type_r = Atom('verify')                         # sms_code    = [] :: [] | binary(),
     attempts = []                                   # attempts    = [] :: [] | integer(),
     services = []                                   # services    = [] :: list(atom()),
-    settings = []                                   # settings    = [] :: [] | list(#'Feature'{}),
+    settings = [('Feature', "id_DEFAULT_LANGUAGE", "DEFAULT_LANGUAGE", "English:en", "LANGUAGE_SETTING")]
     push = []                                       # push        = [] :: [] | binary(),
     os = []                                         # os          = [] :: [] | atom() | ios | android | web,
     created = []                                    # created     = [] :: [] | integer() | binary(),
